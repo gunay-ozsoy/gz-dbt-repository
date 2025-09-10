@@ -37,15 +37,15 @@ sources:
         description: Shipping details for each order
         columns:
           - name: orders_id
-            description: Unique order ID (foreign key to sales table)
-          - name: shipping_id
-            description: Unique shipping operation ID
+            description: Primary key of the ship table (unique order ID)
             tests:
               - unique
               - not_null
           - name: ship_cost
-            description: Shipping cost of the order (to be cast as FLOAT64)
+            description: Shipping cost of the order (FLOAT64)
           - name: shipping_fee
-            description: Fee charged for shipping (duplicate of shipping_fee_1)
+            description: Fee charged for shipping (FLOAT64)
           - name: shipping_fee_1
-            description: Alternate column for shipping fee (duplicate)
+            description: Duplicate of shipping_fee (kept for source reference, cleaned in staging)
+          - name: logcost
+            description: Logistic cost of the order (FLOAT64)
