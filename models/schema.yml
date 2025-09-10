@@ -7,6 +7,12 @@ sources:
       - name: sales
         identifier: raw_gz_sales
         description: Sales of Greenweez / one row per product_id found in each orders_id
+
+        # Freshness testi için
+        loaded_at_field: "CAST(date_date AS TIMESTAMP)"
+        freshness:
+          warn_after: {count: 90, period: day}
+
         columns:
           - name: date_date
             description: Date of purchase
@@ -18,9 +24,11 @@ sources:
             description: Revenue for this product in this order
           - name: quantity
             description: Number of units purchased
+
         tests:
           - unique:
               column_name: "(orders_id || '-' || pdt_id)"
+
       - name: product
         identifier: raw_gz_products
         description: Product catalog of Greenweez
