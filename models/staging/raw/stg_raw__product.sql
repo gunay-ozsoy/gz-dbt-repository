@@ -10,7 +10,7 @@ renamed as (
 
     select
         products_id,
-        purchse_price
+        safe_cast(purchse_price as float64) as purchase_price
 
     from source
 
