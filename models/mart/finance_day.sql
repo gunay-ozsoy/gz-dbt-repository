@@ -1,5 +1,3 @@
-{{ config(materialized='table') }}
-
 with operational as (
   select
     orders_id,
