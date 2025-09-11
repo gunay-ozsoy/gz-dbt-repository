@@ -2,6 +2,9 @@ with orders as (
     select
         orders_id,
         date_date,
+        revenue,         
+        quantity,        
+        purchase_cost,   
         margin
     from {{ ref('int_orders_margin') }}
 ),
@@ -18,6 +21,13 @@ ship as (
 select
     o.orders_id,
     o.date_date,
+    o.revenue,          
+    o.quantity,         
+    o.purchase_cost,    
+    o.margin,
+    coalesce(s.shipping_fee, 0) as shipping_fee,
+    coalesce(s.log_cost, 0)     as log_cost,
+    coalesce(s.ship_cost, 0)    as ship_cost,
     round(
         o.margin
         + coalesce(s.shipping_fee, 0)
