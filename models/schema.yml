@@ -1,0 +1,59 @@
+version: 2
+
+sources:
+  - name: raw
+    schema: gz_raw_data
+    tables:
+      - name: sales
+        identifier: raw_gz_sales
+        description: Sales of Greenweez / one row per product_id found in each orders_id
+
+        # Freshness testi için
+        loaded_at_field: "CAST(date_date AS TIMESTAMP)"
+        freshness:
+          warn_after: {count: 90, period: day}
+
+        columns:
+          - name: date_date
+            description: Date of purchase
+          - name: orders_id
+            description: Unique ID of the order
+          - name: pdt_id
+            description: Product identifier (foreign key to product table)
+          - name: revenue
+            description: Revenue for this product in this order
+          - name: quantity
+            description: Number of units purchased
+
+        tests:
+          - unique:
+              column_name: "(orders_id || '-' || pdt_id)"
+
+      - name: product
+        identifier: raw_gz_products
+        description: Product catalog of Greenweez
+        columns:
+          - name: products_id
+            description: Unique product ID
+            tests:
+              - unique
+              - not_null
+          - name: purchse_price
+            description: Purchase price of the product (to be cast as FLOAT64)
+      - name: ship
+        identifier: raw_gz_ship
+        description: Shipping details for each order
+        columns:
+          - name: orders_id
+            description: Primary key of the ship table (unique order ID)
+            tests:
+              - unique
+              - not_null
+          - name: ship_cost
+            description: Shipping cost of the order (FLOAT64)
+          - name: shipping_fee
+            description: Fee charged for shipping (FLOAT64)
+          - name: shipping_fee_1
+            description: Duplicate of shipping_fee (kept for source reference, cleaned in staging)
+          - name: logcost
+            description: Logistic cost of the order (FLOAT64)
