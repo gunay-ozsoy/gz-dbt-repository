@@ -20,8 +20,10 @@ select
   round(safe_divide(sum(revenue),
                     nullif(count(distinct orders_id), 0)), 2) as avg_basket,
   round(sum(operational_margin), 2)         as operational_margin,
+  round(sum(margin), 2)                     as total_margin,
   round(sum(purchase_cost), 2)              as total_purchase_cost,
   round(sum(shipping_fee), 2)               as total_shipping_fees,
+  round(sum(ship_cost), 2)                  as total_ship_cost,
   round(sum(log_cost), 2)                   as total_log_costs,
   sum(quantity)                             as total_quantity_sold
 from operational
